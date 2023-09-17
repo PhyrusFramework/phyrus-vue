@@ -1,0 +1,10 @@
+.p-progress-spinner-circle {
+    stroke: var(--primary-color);
+}
+.p-checkbox .p-checkbox-box.p-highlight {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+}
+.p-colorpicker-panel {
+    z-index: 100 !important;
+}

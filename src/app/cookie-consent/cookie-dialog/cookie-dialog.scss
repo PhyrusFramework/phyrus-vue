@@ -1,0 +1,32 @@
+.cookie-configuration {
+    align-items: flex-start;
+    padding: 50px;
+
+    .app-modal-box {
+        max-width: 500px;
+
+        h2 {
+            margin: 0;
+        }
+
+        .always {
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .buttons {
+            margin-top: 30px;
+
+            .app-button {
+                margin-left: 15px;
+                background-color: transparent;
+                padding: 0;
+                color: var(--primary-color);
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

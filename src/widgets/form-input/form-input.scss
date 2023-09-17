@@ -1,0 +1,255 @@
+.form-input {
+    width: 100%;
+    position: relative;
+
+    label {
+        display: block;
+        font-size: .9rem;
+        color: rgb(99, 99, 99);
+    }
+
+    &.p-float-label .p-inputwrapper-focus ~ label,
+    &.p-float-label .p-inputwrapper-filled ~ label,
+    &.p-float-label input:focus ~ label,
+    &.p-float-label .p-filled ~ label {
+        left: 0;
+        font-size: .8rem;
+    }
+
+    input, textarea, .p-password, .p-inputnumber, .p-dropdown, .p-multiselect, .p-chips, .p-chips .p-inputtext {
+        width: 100%;
+        resize: none;
+    }
+
+    &.type-date {
+        .p-calendar {
+            width: 100%;
+        }
+    }
+
+    .p-autocomplete {
+        flex: 1;
+        display: flex;
+    }
+
+    &.type-checkbox, &.type-toggle {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 5px;
+
+        label {
+            margin-bottom: 0;
+        }
+
+        .p-checkbox {
+            transform: scale(.8);
+        }
+    }
+
+    &.type-toggle {
+        gap: 3px;
+
+        .p-inputswitch {
+            transform: scale(.7);
+        }
+    }
+
+    &.type-select {
+        .p-dropdown {
+            display: flex;
+            min-height: 30px;
+        }
+
+        .p-dropdown-label {
+            padding: 5px 10px;
+        }
+
+        label {
+            font-size: .9rem;
+        }
+
+        .p-autocomplete-dd {
+            > input {
+                padding: 0.5rem 0.75rem;
+            }
+            > button {
+                width: max-content;
+                padding: 0.5rem;
+
+                svg {
+                    width: 0.6rem;
+                    height: 0.6rem;
+                }
+            }
+        }
+
+        .p-multiselect-label {
+            padding: .35rem .75rem;
+            font-size: .9rem;
+        }
+    }
+
+    &.type-editor {
+
+        .p-editor-content {
+            
+            .ql-editor {
+                min-height: 300px;
+            }
+        }
+    }
+
+    &.type-tags {
+        .p-chips .p-chips-multiple-container .p-chips-token {
+            font-size: .9rem;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-bottom: 3px;
+        }
+    }
+
+    .file-picker {
+
+        .image-box-picker {
+            height: 150px;
+            width: 100%;
+            border-radius: 5px;
+            border: dashed 1px gray;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &.filled {
+                border: none;
+            }
+
+            &-label {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                svg {
+                    width: 40px;
+                    height: 40px;
+                }
+            }
+
+            .video-player {
+                width: 100%;
+                height: 100%;
+            }
+
+            .delete-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background-color: white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 25px;
+                height: 25px;
+                cursor: pointer;
+
+                svg {
+                    color: red;
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+
+    }
+
+    .searchbar {
+        display: flex;
+        align-items: center;
+        background: white;
+        border: solid 1px lightgray;
+        border-radius: 5px;
+        position: relative;
+    
+        svg.search-icon {
+            color: var(--gray);
+            width: 20px;
+            height: 20px;
+            flex: 0 0 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            margin-left: -30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .p-autocomplete {
+            border: none;
+
+            input {
+                border: none;
+                padding-right: calc(.75rem + 30px);
+            }
+
+            .p-autocomplete-loader {
+                right: 40px;
+            }
+        }
+    
+    }
+
+    .form-input-help {
+
+        &.floating {
+            position: absolute;
+            left: 0;
+            top: 110%;
+            top: calc(100% + 5px);
+        }
+    }
+
+    &.invalid {
+        .form-input-help {
+            color: var(--error-color);
+        }
+    }
+
+}
+
+.form-input-select {
+
+    &.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+        padding: 0;
+
+        .dropdown-option {
+            padding: 15px;
+            cursor: pointer;
+        }
+    
+    }
+
+    &.p-multiselect-panel {
+        .p-checkbox {
+            transform: scale(.8);
+        }
+        .dropdown-option {
+            font-size: .9rem;
+        }
+    }
+}
+
+.form-input-calendar {
+
+    &.p-datepicker table td {
+        user-select: none;
+
+        >span.p-highlight {
+            color: white;
+            background: var(--primary-color);
+        }
+    
+    }
+
+}

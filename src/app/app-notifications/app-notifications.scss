@@ -1,0 +1,48 @@
+.app-notifications {
+    position: fixed;
+    z-index: 100;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    padding: 20px;
+
+    > * {
+        pointer-events: all;
+    }
+
+    .notification {
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+
+        .p-message-wrapper {
+            padding: .5rem 0.5rem 0.5rem 1rem;
+            flex: 1;
+
+            .p-message-text {
+                font-size: .8rem;
+                padding: 0 .5rem;
+                flex: 1;
+            }
+
+            .p-icon {
+                width: .8rem;
+                height: .8rem;
+            }
+        }
+
+        &.custom {
+            color: black;
+            background-color: whitesmoke;
+            border: solid 1px lightgray;
+
+            .p-message-icon {
+                display: none;
+            }
+
+            .p-message-close {
+                color: gray;
+            }
+        }
+    }
+}

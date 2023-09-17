@@ -1,0 +1,70 @@
+.app-table {
+
+    .p-checkbox {
+        transform: scale(.7);
+    }
+
+    .p-radiobutton {
+        transform: scale(.7);
+    }
+
+    .p-datatable {
+
+        .p-datatable-wrapper {
+            height: 100%;
+
+            > table {
+                height: 100%;
+            }
+        }
+
+        .p-datatable-tbody>tr {
+
+            &.p-datatable-emptymessage>td {
+                text-align: center;
+                padding: 50px 0;
+            }
+
+            >td {
+
+                &.dragIconColumn {
+                    width: 35px;
+                    padding: 0;
+            
+                    .p-datatable-reorderablerow-handle {
+                        padding: 1rem;
+                        box-sizing: content-box;
+                    }
+                }
+        
+                &.text-ellipsis {
+                    > div {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+        
+            }
+
+        }
+
+        .p-datatable-loading-overlay {
+            background: transparent;
+        }
+
+    }
+
+    .p-paginator {
+
+        .p-dropdown {
+            height: 2.4rem;
+
+            .p-dropdown-label {
+                padding: 6px 0 6px 8px;
+            }
+        }
+
+    }
+
+}

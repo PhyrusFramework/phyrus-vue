@@ -1,0 +1,48 @@
+
+.copy_code {
+    transition: 0.2s opacity ease;
+    position: relative;
+    opacity: 0.5;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+  .copy_code:focus {
+    outline: none;
+  }
+  .copy_code > textarea {
+    user-select: none;
+    position: absolute;
+    padding: 0;
+    width: 0;
+    height: 0;
+    background: transparent;
+    resize: none;
+    opacity: 0;
+    border-color: rgba(0, 0, 0, 0);
+  }
+  .copy_code > svg {
+    pointer-events: none;
+  }
+  .copy_code:hover {
+    opacity: 1;
+  }
+  .copy_code:hover > .tooltip {
+    display: block;
+  }
+  .copy_code > .tooltip {
+    font-family: sans-serif;
+    display: none;
+    position: absolute;
+    bottom: -10px;
+    left: -96px;
+    font-size: 12px;
+    color: white;
+    width: 84px;
+    height: 30px;
+    line-height: 30px;
+    background: rgba(0, 0, 0, 0.8);
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 4px;
+  }

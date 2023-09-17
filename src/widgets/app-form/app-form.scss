@@ -1,0 +1,24 @@
+.app-form {
+
+    .app-form-column {
+        padding-bottom: 25px;
+
+        .form-input {
+
+            label {
+
+                .required {
+                    color: red;
+                    padding-left: 2px;
+                }
+            }
+
+        }
+
+        .btn.submit {
+            padding: 10px 20px;
+        }
+
+    }
+
+}
