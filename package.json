@@ -1,12 +1,13 @@
 {
   "name": "@phyrus/vue",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Phyrus Vue3 library",
   "url": "https://github.com/PhyrusFramework/phyrus-vue",
   "main": "index.ts",
   "types": "index.d.ts",
   "files": [
-    "/src"
+    "/src",
+    "/css"
   ],
   "scripts": {
     "build": "tsc"
