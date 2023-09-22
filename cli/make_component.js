@@ -92,7 +92,7 @@ export default defineComponent({
 }
 
 else {
-    fs.writeFileSync(folder + `/${name}.ts`, `import { Component, Vue, toNative } from "vue-facing-decorator";
+    fs.writeFileSync(folder + `/${name}.ts`, `import { Component, Vue, toNative, Prop } from "vue-facing-decorator";
 
 @Component({})
 class ${upperName}Component extends Vue {

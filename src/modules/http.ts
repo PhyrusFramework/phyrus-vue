@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Storage from './storage';
+import { Storage } from './storage';
 
 export type HTTPMethod = 'GET'|'POST'|'PUT'|'DELETE'|'PATCH';
 
@@ -11,7 +11,7 @@ export type Request = {
     method: HTTPMethod,
     url: string,
     baseUrl?: string,
-    data: any,
+    body: any,
     headers: any,
     dataFormat: HTTPDataFormat
     isRefresh: boolean,
@@ -25,7 +25,7 @@ export type Request = {
     },
 
     setMethod: (method: HTTPMethod) => Request,
-    set: (data: any) => Request,
+    data: (data: any) => Request,
     setUrl: (url: string, parameters?: any) => Request,
     setBaseURL: (base: string) => Request,
     setHeaders: (headers: any) => Request,
@@ -34,7 +34,7 @@ export type Request = {
     //send: () => Promise<any>,
     fakeResponse: (action: (request: Request) => Promise<any>) => Request,
     getFullResponse: () => Request,
-    then: (response: any) => Promise<any>
+    then: (callback: (response: any) => void) => Promise<any>
 }
 
 type RequestAttempt = {
@@ -158,7 +158,7 @@ export default class http {
             method,
             url: '',
             baseUrl: undefined,
-            data: {},
+            body: {},
             headers: {},
             dataFormat: 'json',
             responseType: 'json',
@@ -172,10 +172,10 @@ export default class http {
                 this.method = method;
                 return this;
             },
-            set(data: any) : Request {
+            data(data: any) : Request {
                 Object.keys(data)
                 .forEach((k: string) => {
-                    this.data[k] = data[k];
+                    this.body[k] = data[k];
                 })
                 return this;
             },
@@ -316,7 +316,7 @@ export default class http {
             this.nextRequestIsRefresh = false; 
             
             // Get request data (empty object if not specified)
-            const data = request.data ? request.data : {}
+            const data = request.body ? request.body : {}
 
             //// Check fake api
             if (request.fakeRequestAction) {
@@ -325,6 +325,7 @@ export default class http {
                     .then((response) => {
                         resolve(response);
                     })
+                    .catch(reject);
                 }, 250 + (Math.random() * 250));
                 return;
             }

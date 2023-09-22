@@ -45,7 +45,7 @@ fs.writeFileSync(folder + `/${name}.vue`, `<template>
 <style lang="scss" src="./${name}.scss"></style>`);
 
 // SCSS file
-fs.writeFileSync(folder + `/${name}.scss`, `#${name}-page {
+fs.writeFileSync(folder + `/${name}.scss`, `#${name}${(name.includes('-page') ? '' : '-page')} {
 
 }`);
 
@@ -92,7 +92,7 @@ export default defineComponent({
 }
 
 else {
-    fs.writeFileSync(folder + `/${name}.ts`, `import { Component, Vue, toNative } from "vue-facing-decorator";
+    fs.writeFileSync(folder + `/${name}.ts`, `import { Component, Vue, toNative, Prop } from "vue-facing-decorator";
 
 @Component({})
 class ${upperName}Page extends Vue {
@@ -104,7 +104,7 @@ export default toNative(${upperName}Page);`);
 
 
 // Add page route
-let configFile = src + '/config.ts';
+let configFile = src + '/config/routes.ts';
 
 function addRouteToFile (file) {
 
@@ -144,22 +144,7 @@ function addRouteToFile (file) {
 if (fs.existsSync(configFile)) {
 
     const content = fs.readFileSync(configFile);
-    if (!content.includes('//ADDROUTE')) {
-
-        // Check alternatively /routes.ts
-        configFile = src + '/routes.ts';
-        if (fs.existsSync(configFile)) {
-
-            const content = fs.readFileSync(configFile);
-            if (content.includes('//ADDROUTE')) {
-
-                addRouteToFile(configFile);
-            }
-
-        }
-
-    }
-    else {
+    if (content.includes('//ADDROUTE')) {
         addRouteToFile(configFile);
     }
 

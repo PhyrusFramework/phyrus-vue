@@ -3,8 +3,6 @@ export default class EventListener {
 
     static events : any = {}
 
-    static waiters : any = {}
-
     static on(event: string, action: string, callback: (param?: any) => void) {
 
         if (!this.events[event]) {
@@ -20,15 +18,6 @@ export default class EventListener {
         }
 
         this.events[event][ac] = callback;
-
-        if (this.waiters[event]) {
-            for(const waiter of this.waiters[event]) {
-                callback(waiter);
-            }
-            this.waiters[event] = null;
-            delete this.waiters[event];
-        }
-
     }
 
     static trigger(event: string, param?: any) : Promise<any[]> {
@@ -36,12 +25,6 @@ export default class EventListener {
         return new Promise((resolve, reject) => {
 
             if (!this.events[event]) {
-
-                if (!this.waiters[event]) {
-                    this.waiters[event] = [];
-                }
-    
-                this.waiters[event].push(param);
                 resolve([]);
                 return;
             }
@@ -99,10 +82,6 @@ export default class EventListener {
     static resetEvent(event: string) {
         this.events[event] = null;
         delete this.events[event];
-        if (this.waiters[event]) {
-            this.waiters[event] = null;
-            delete this.waiters[event];
-        }
     }
 
     static destroy(event: string, action: string) {

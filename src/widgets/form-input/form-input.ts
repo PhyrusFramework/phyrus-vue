@@ -51,6 +51,7 @@ export default defineComponent({
 
         type: {
             type: String as PropType<'text'
+            |'email'
             |'number'
             |'checkbox'
             |'select'
@@ -66,7 +67,8 @@ export default defineComponent({
             |'color'
             |'media'
             |'image'
-            |'video'>,
+            |'video'
+            |'search'>,
             default: 'text'
         },
 
@@ -219,6 +221,45 @@ export default defineComponent({
             if (this.loading === undefined) return false;
             if (typeof(this.loading) == 'boolean') return this.loading;
             return (this.loading as Function)();
+        },
+
+        pressEnter() {
+            setTimeout(() => {
+                this.$emit('pressEnter');
+            }, 5)
+        },
+
+        focus() {
+
+            const focusInput = (ref: string, direct: boolean = false) => {
+                const el : HTMLElement = (this.$refs as any)[ref].$el;
+                const tag = el.tagName;
+
+                if (direct || ['input', 'textarea'].includes(tag.toLowerCase())) 
+                    el.focus();
+                else {
+                    const input = el.querySelector('input');
+                    if (input) {
+                        input.focus();
+                    }
+                }
+            }
+
+            if (['text', 'email'].includes(this.type)) {
+                focusInput('textInput');
+            }
+            else if (this.type == 'search') {
+                focusInput('searchInput');
+            }
+            else if (this.type == 'password') {
+                focusInput('passwordInput');
+            }
+            else if (this.type == 'textarea') {
+                focusInput('textareaInput');
+            }
+            else if (this.type == 'number') {
+                focusInput('numberInput');
+            }
         },
 
         classnames() {
@@ -407,7 +448,7 @@ export default defineComponent({
 
         suggestionSelected(arg: any) {
             this.$emit('suggestion-selected', arg);
-            this.$emit('update:modelValue', arg);
+            this.setValue(arg);
         },
 
         passEmit(event: string, arg?: any) {
@@ -509,6 +550,11 @@ export default defineComponent({
             }
         },
 
+        setValue($e: any) {
+            this.$emit('update:modelValue', $e);
+            this.$emit('change', $e);
+        },
+
         updateValue($e: any) {
 
             const currentWriteCount = this.writeCount + 1;
@@ -522,20 +568,20 @@ export default defineComponent({
                 }, this.stopTime);
             }
 
-            if (['text', 'password', 'textarea', 'search'].includes(this.type)) {
+            if (['text', 'email', 'password', 'textarea', 'search'].includes(this.type)) {
                 if (this.mask) {
-                    this.$emit('update:modelValue', $e);
+                    this.setValue($e);
                 } else {
-                    this.$emit('update:modelValue', $e.target.value);
+                    this.setValue($e.target.value);
                 }
                 stopEvent();
             }
             else if (['number'].includes(this.type)) {
-                this.$emit('update:modelValue', $e.value);
+                this.setValue($e.value);
                 stopEvent();
             }
             else if (['checkbox', 'toggle', 'tags', 'color', 'slider'].includes(this.type)) {
-                this.$emit('update:modelValue', $e);
+                this.setValue($e);
                 if (['tags', 'slider'].includes(this.type)) {
                     stopEvent();
                 }
@@ -549,15 +595,15 @@ export default defineComponent({
                         arr.push(i.value);
                     }
                     this.selectedOptions = $e;
-                    this.$emit('update:modelValue', arr);
+                    this.setValue(arr);
 
                 } else {
                     if ($e.value === undefined) {
                         this.selectOption = null;
-                        this.$emit('update:modelValue', $e.value);
+                        this.setValue($e.value);
                     } else {
                         this.selectOption = $e;
-                        this.$emit('update:modelValue', $e.value);
+                        this.setValue($e.value);
                     }
     
                     if (this.suggestions) {
@@ -580,7 +626,7 @@ export default defineComponent({
                     const val : any = rt == 'date' ? $e
                         : (rt == 'time' ? Time.fromDate($e) : Time.fromDate($e).format(this.returnFormat));
 
-                    this.$emit('update:modelValue', val);
+                    this.setValue(val);
 
 
                 } else if (mode == 'multiple') {
@@ -592,7 +638,7 @@ export default defineComponent({
                         : (rt == 'time' ? Time.fromDate(d) : Time.fromDate(d).format(this.returnFormat));
                         aux.push(val);
                     }
-                    this.$emit('update:modelValue', aux);
+                    this.setValue(aux);
 
                 } else if (mode == 'range') {
 
@@ -609,14 +655,14 @@ export default defineComponent({
                         : (rt == 'time' ? Time.fromDate(d) : Time.fromDate(d).format(this.returnFormat));
                         aux.push(val);
                     }
-                    this.$emit('update:modelValue', aux);
+                    this.setValue(aux);
 
                 }
 
 
             }
             else if (this.type == 'editor') {
-                this.$emit('update:modelValue', $e.target.innerHTML);
+                this.setValue($e.target.innerHTML);
                 stopEvent();
             }
         },
@@ -625,7 +671,7 @@ export default defineComponent({
             this.mediaType = this.getMediaType(file)!;
             this.mediaSrc = utils.fileToURL(file);
 
-            this.$emit('update:modelValue', file);
+            this.setValue(file);
         },
 
         getMediaType(file?: File) : 'image'|'video'|undefined {
@@ -679,7 +725,7 @@ export default defineComponent({
         },
 
         removeFile() {
-            this.$emit('update:modelValue', null);
+            this.setValue(null);
             this.mediaSrc = undefined;
             this.mediaType = 'image';
         }

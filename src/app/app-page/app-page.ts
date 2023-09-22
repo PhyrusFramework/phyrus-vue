@@ -9,6 +9,9 @@ export default defineComponent({
     components: { AppGlobalWidgets, DefaultLayout },
 
     props: {
+        name: {
+            type: String
+        },
         layout: {
             type: String
         },

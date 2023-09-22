@@ -1,11 +1,8 @@
 import ILanguageConfig from "./ILanguageConfig";
-import IRoute from "./IRoute";
 
 export default interface IAppConfig {
-    config?: any,
+    [key: string]: any,
     language?: ILanguageConfig,
-    layouts?: any,
-    routes: IRoute[],
     primevue?: {
         unstyled?: boolean,
         pt?: any,

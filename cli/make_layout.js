@@ -37,7 +37,7 @@ if (fs.existsSync(folder + `/${name}.vue`)) {
 // Create vue file
 fs.writeFileSync(folder + `/${name}.vue`, `<template>
     <div id="${name}-layout">
-
+        <slot />
     </div>
 </template>
 
@@ -92,11 +92,13 @@ export default defineComponent({
 }
 
 else {
-    fs.writeFileSync(folder + `/${name}.ts`, `import { Component, Vue, toNative } from "vue-facing-decorator";
+    fs.writeFileSync(folder + `/${name}.ts`, `import { Component, Vue, toNative, Prop } from "vue-facing-decorator";
 
 @Component({})
 class ${upperName}Layout extends Vue {
 
+    @Prop
+    page?: () => any
 
 }
 export default toNative(${upperName}Layout);`);

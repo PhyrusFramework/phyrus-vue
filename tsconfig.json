@@ -25,10 +25,7 @@
       },
       "types": [
         "@types/node",
-        "@nuxt/types",
-        "@nuxtjs/auth",
-        "@nuxtjs/auth-next",
-        "@types/nuxtjs__auth"
+        "vite/client"
       ]
     },
     "exclude": [

@@ -1,9 +1,9 @@
 
-export default class Store {
+export default class StoreClass {
 
-    private static _getters: any = {}
+    private _getters: any = {}
 
-    public static getter(key: string, loader?: () => Promise<any>) {
+    public getter(key: string, loader?: () => Promise<any>) {
 
         if (!this._getters[key]) {
             this._getters[key] = {
@@ -23,25 +23,25 @@ export default class Store {
 
     }
 
-    public static clear(key:string) {
+    public clear(key:string) {
         if (this._getters[key]) {
             this._getters[key].value == undefined;
             this._getters[key].status = 'none';
         }
     }
 
-    public static reload(key: string) {
+    public reload(key: string) {
         this.clear(key);
         return this.get(key);
     }
 
-    public static set(key: string, value: any) {
+    public set(key: string, value: any) {
         this.getter(key, () => new Promise(resolve => {
             resolve(value);
         }))
     }
 
-    public static getSync(key: string) {
+    public getSync(key: string) {
         if (!this._getters[key]) {
             return null;
         }
@@ -53,7 +53,7 @@ export default class Store {
         }
     }
 
-    public static get(key:string, loader?: () => Promise<any>) {
+    public get(key:string, loader?: () => Promise<any>) {
         return new Promise((resolve, reject) => {
 
             if (!this._getters[key]) {
@@ -99,4 +99,9 @@ export default class Store {
         });
     }
 
+}
+
+const Store : StoreClass = new StoreClass();
+export {
+    Store
 }

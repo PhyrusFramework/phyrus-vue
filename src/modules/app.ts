@@ -1,13 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import PrimeVue from 'primevue/config';
 import Ripple from 'primevue/ripple';
-import Alert from '../modals/alert/alert.vue';
 import { AppModalInterface, ModalOptions, ModalType } from '../app/app-modal/app-modal';
 import { AppNotification, AppNotificationsInterface } from '../app/app-notifications/app-notifications';
 import { DrawerInterface, DrawerOptions } from '../app/drawer/drawer';
 import translate from './translator';
-import Cropper from '../modals/cropper/cropper.vue';
-import ScreenLoader from '../modals/screen-loader/screen-loader.vue';
 import { CookieConsentInterface, CookieType } from '../app/cookie-consent/cookie-consent';
 import AppPage from '../app/app-page/app-page.vue';
 import IAppConfig from '../interfaces/IAppConfig';
@@ -23,17 +20,18 @@ import http from './http';
 import IButton from '../interfaces/IButton';
 import baseComponent from '../app/base-component';
 import { markRaw } from 'vue';
+import IRouter from '../interfaces/IRouter';
 
 export default class App {
 
-    static init(app: any, config: IAppConfig) {
+    static init(app: any, config: IAppConfig, routes: IRouter) {
 
         Config.init(config);
         http.loadTokenFromStorage();
 
         const router = createRouter({
             history: createWebHistory(),
-            routes: config.routes,
+            routes: routes,
         });
         app.use(router);
 
@@ -343,32 +341,6 @@ export default class App {
 
     /*
     TODO
-    static cropImage(url: string, ratio: number = 0) : Promise<string> {
-        
-        return new Promise((resolve, reject) => {
-
-            const props: any = {
-                src: url,
-                onSave: (src: string) => {
-                    resolve(src);
-                }
-            }
-
-            if (ratio > 0) {
-                props['ratio'] = ratio;
-            }
-
-            this.modal.open({
-                component: Cropper,
-                class: 'cropper-modal',
-                props: props
-            });
-
-
-        });
-
-    }
-
     static loading() {
         this.modal.open({
             component: ScreenLoader,

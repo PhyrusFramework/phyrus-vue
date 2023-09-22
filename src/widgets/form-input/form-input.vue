@@ -3,10 +3,13 @@
 
         <label v-if="label && !['media','image','video'].includes(type)" :for="inputName" v-html="label" />
 
-        <InputText v-if="type == 'text' && !mask && !suggestions" 
+        <InputText v-if="['text', 'email'].includes(type) && !mask && !suggestions" 
         :modelValue="modelValue" @input="updateValue($event)" v-bind="bindProps()" 
         :disabled="isDisabled()"
-        :class="inputClassnames()"/>
+        @keydown.enter="pressEnter()"
+        :class="inputClassnames()"
+        :type="type"
+        ref="textInput"/>
 
         <!-- TEXT WITH SUGGESTIONS -->
         <AutoComplete v-if="type == 'text' && suggestions"
@@ -29,6 +32,7 @@
         <!-- SEARCHBAR -->
         <div class="searchbar" v-if="type == 'search'">
             <AutoComplete
+            ref="searchInput"
             :modelValue="modelValue" @input="updateValue($event)" v-bind="bindProps()" 
             :disabled="isDisabled()" :class="inputClassnames()" :suggestions="suggestions"
             @item-select="suggestionSelected($event.value.value)"
@@ -54,11 +58,15 @@
         :mask="mask"
         @complete="passEmit('complete', modelValue)"/>
 
-        <Textarea v-if="type == 'textarea'" :modelValue="modelValue" @input="updateValue($event)" v-bind="bindProps()" 
+        <Textarea ref="textareaInput"
+        v-if="type == 'textarea'" :modelValue="modelValue" @input="updateValue($event)" v-bind="bindProps()" 
         :disabled="isDisabled()"
-        :class="inputClassnames()"/>
+        :class="inputClassnames()"
+        @keydown.enter="pressEnter()"/>
 
-        <Password v-if="type == 'password'" :modelValue="modelValue" @input="updateValue($event)" v-bind="bindProps()"
+        <Password ref="passwordInput"
+        @keydown.enter="pressEnter()"
+        v-if="type == 'password'" :modelValue="modelValue" @input="updateValue($event)" v-bind="bindProps()"
         :disabled="isDisabled()"
         :class="inputClassnames()">
             <template #footer v-if="instructions">
@@ -69,7 +77,9 @@
 
         <InputNumber v-if="type == 'number'" :modelValue="modelValue" @input="updateValue($event)" v-bind="bindProps()"
         :disabled="isDisabled()"
-        :class="inputClassnames()"/>
+        ref="numberInput"
+        :class="inputClassnames()"
+        @keydown.enter="pressEnter"/>
 
         <Checkbox v-if="type == 'checkbox'" :modelValue="modelValue" @input="updateValue($event)" v-bind="bindProps()" 
         :disabled="isDisabled()"

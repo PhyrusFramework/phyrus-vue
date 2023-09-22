@@ -1,6 +1,47 @@
 import Validator from "./validator";
 
-export default {
+type UtilsType = {
+    queryParams: () => any,
+    setQueryParams: (params: any, keepCurrentParams: boolean) => void,
+    dotNotation: (arr: any, key: string, defaultValue: string|null) => any,
+    invertList: (arr: any[]) => any[],
+    areEqual: (a: any, b: any) => boolean,
+    copy: (obj: any, options?: {
+        copyArrays?: boolean,
+        recursive?: boolean
+    }, tree?: any[]) => any,
+    copyArray: (arr: any[], options?: {
+        copyObjects: boolean,
+        copyArrays: boolean
+    }, tree?: any[]) => any[],
+    validateEmail: (email: string) => boolean,
+    addToList: (list: any[]|null|undefined, items: any[], mapFunc?: (item: any) => any) => any[],
+    randomString: (length: number) => string,
+    rand: (max: number) => number,
+    force: (obj: any, defaultValues: any) => any,
+    merge: (objA: any, objB: any, mergeArrays: boolean) => any,
+    scrollBottomReached: (e: any, threshold : number) => any,
+    fileToSrc: (file: any) => Promise<any>,
+    fetchFile: (path: string, fileName: string) => Promise<File>,
+    fileToURL: (file: File) => string,
+    base64ToFile: (src: string, name: string) => File,
+    capitalize: (text: string) => string,
+    randomImage: (width: number, height: number, seed?: string) => string,
+    hasExtension: (filename: string|File, extensions: string|string[]) => boolean,
+    formatNumber: (num: any, decimals: number) => string,
+    getMIMETypes: () => any,
+    getMimeType: (extensionOrFile: string|File) => string,
+    isImage: (file: File) => boolean,
+    stripTags: (htmlText: string) => string,
+    downloadFile: (file: File) => void,
+    downloadBlob: (blob: Blob, name: string) => void,
+    clipboard: (text: string) => void,
+    downloadText: (text: string, filename: string) => void,
+    separateWords: (text: string) => string[],
+    cssVariable: (name: string, value: string) => void
+}
+
+const utils : UtilsType = {
 
     /**
      * Get query params from URL.
@@ -54,23 +95,23 @@ export default {
      * @param string key 
      * @returns {*} value
      */
-    dotNotation(arr: any, key: string, defaultValue?: string|null) : any {
+    dotNotation(arr: any, key: string, defaultValue: string|null = '') : any {
         if(!arr || !key) {
             return defaultValue !== undefined ? defaultValue : null;
         }
 
         if (!key.includes(".")) {
             if (arr[key]) return arr[key];
-            return key;
+            return defaultValue === null  ? key : defaultValue;
         }
         const parts = key.split(".");
         let c = arr;
         for(let i = 0; i<parts.length - 1; ++i) {
-            if (!c[parts[i]]) return defaultValue !== undefined  ? defaultValue : key;
+            if (!c[parts[i]]) return defaultValue === null  ? key : defaultValue;
             c = c[parts[i]];
         }
         const n = parts.length - 1;
-        if (!c[parts[n]]) return defaultValue !== undefined  ? defaultValue : key;
+        if (!c[parts[n]]) return defaultValue === null  ? key : defaultValue;
         return c[parts[n]];
     },
 
@@ -80,7 +121,7 @@ export default {
      * @param array arr 
      * @returns array
      */
-    invertList(arr: Array<any>) {
+    invertList(arr: any[]) : any[] {
         const inv = [];
 
         for(let i = arr.length - 1; i >= 0; --i) {
@@ -96,7 +137,7 @@ export default {
      * @param a
      * @param b 
      */
-     areEqual(a: any, b: any) {
+     areEqual(a: any, b: any) : boolean {
 
         if (!a) {
             if (!b) return true;
@@ -153,7 +194,7 @@ export default {
      copy(obj: any, options?: {
         copyArrays?: boolean,
         recursive?: boolean
-     }, tree: any[] = []) {
+     }, tree: any[] = []) : any {
 
         const arrays = options && options.copyArrays === false ? false : true;
         const recursive = options && options.recursive === false ? false : true;
@@ -245,7 +286,7 @@ export default {
      * @param email 
      * @returns bool
      */
-    validateEmail(email: string) {
+    validateEmail(email: string) : boolean {
         if (!email) return false;
         if (email == "") return false;
         if (email.length < 4) return false;
@@ -472,8 +513,7 @@ export default {
         })
     },
 
-
-    fileToURL(file: File) {
+    fileToURL(file: File) : string {
         return URL.createObjectURL(file);
     },
 
@@ -484,7 +524,7 @@ export default {
      * @param src Base 64
      * @returns file
      */
-    base64ToFile(src: string, name: string = 'file') {
+    base64ToFile(src: string, name: string = 'file') : File {
         // convert base64/URLEncoded data component to raw binary data held in a string
         let byteString;
         const split = src.split(',');
@@ -532,7 +572,7 @@ export default {
      * @param text 
      * @returns string
      */
-    capitalize(text: string) {
+    capitalize(text: string) : string {
         return text[0].toUpperCase() + text.substr(1);
     },
 
@@ -543,7 +583,7 @@ export default {
      * @param height 
      * @returns URL
      */
-    randomImage(width = 250, height = 250, seed?: string) {
+    randomImage(width = 250, height = 250, seed?: string) : string {
         return 'https://picsum.photos/seed/' + (seed ? seed : this.randomString(4)) + '/' + width + '/' + height;
     },
     
@@ -850,4 +890,8 @@ export default {
         (root as any).style.setProperty('--' + name, value);
     }
 
+}
+export default utils;
+export {
+    UtilsType
 }

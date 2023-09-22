@@ -1,17 +1,18 @@
-import { getCurrentInstance, ComponentOptions } from 'vue';
-import { useRouter, useRoute, Router } from 'vue-router'
+import { ComponentOptions } from 'vue';
 import translate from '../modules/translator';
-import Utils from '../modules/utils';
-import Time from '../modules/time';
-import Storage from '../modules/storage';
+import Utils, { UtilsType } from '../modules/utils';
+import StorageClass, { Storage } from '../modules/storage';
 import Config from '../modules/config';
 import App from '../modules/app';
-import store from '../modules/store';
 import utils from '../modules/utils';
+import StoreClass, { Store } from '../modules/store';
 
 declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {
-        page: any,
+        $config: any,
+        $store: StoreClass,
+        $storage: StorageClass,
+        $utils: UtilsType,
         $t: (key: string, params?: any) => void,
         hasEvent: (name: string) => boolean,
         to: (page: string) => void,
@@ -25,13 +26,36 @@ declare module '@vue/runtime-core' {
 
 const BaseComponent : ComponentOptions = {
 
-    props: {
-        Page: {}
-    },
-
     data() {
         return {
             _updateCheck: 1
+        }
+    },
+
+    mounted() {
+        if (import.meta.hot) {
+            // Accept hot updates for this component
+            import.meta.hot.accept();
+            
+            // Optional: React to updates, for example, by re-executing the created() method
+            import.meta.hot.on("update", () => {
+              this.created();
+            });
+        }
+    },
+
+    computed: {
+        $config() {
+            return Config.values();
+        },
+        $store() : StoreClass {
+            return Store;
+        },
+        $utils() : UtilsType {
+            return Utils;
+        },
+        $storage() : StorageClass {
+            return Storage;
         }
     },
 
@@ -66,6 +90,10 @@ const BaseComponent : ComponentOptions = {
 
         closeDrawer() {
             return App.drawer.close();
+        },
+
+        hasSlot(name: string) {
+            return !!this.$slots[name];
         }
     }
 }

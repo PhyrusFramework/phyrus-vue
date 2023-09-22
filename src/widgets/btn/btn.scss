@@ -1,6 +1,6 @@
 
 button.btn {
-    padding: 4px 12px;
+    padding: 10px 15px;
     border-radius: 3px;
     border: none;
     background-color: var(--primary-color);
@@ -35,6 +35,7 @@ button.btn {
 
     &.no-fill {
         width: max-content;
+        padding: 4px 12px;
     }
     &.centered {
         margin-left: auto;

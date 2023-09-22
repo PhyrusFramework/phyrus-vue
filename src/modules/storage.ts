@@ -1,8 +1,7 @@
-import Config from './config';
 
-export default class Storage {
+export default class StorageClass {
 
-    static set (key: string, value: any) {
+    set (key: string, value: any) {
 
         if (typeof value === 'string')
             window.localStorage.setItem(key, value);
@@ -14,7 +13,7 @@ export default class Storage {
 
     }
 
-    static get (key: string) {
+    get (key: string) {
 
         const value = window.localStorage.getItem(key);
         if (value == null) return;
@@ -28,12 +27,17 @@ export default class Storage {
 
     }
 
-    static remove (key: string) {
+    remove (key: string) {
         window.localStorage.removeItem(key);
     }
 
-    static clear () {
+    clear () {
         window.localStorage.clear();
     }
 
+}
+
+const Storage = new StorageClass();
+export {
+    Storage
 }

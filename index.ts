@@ -4,7 +4,7 @@ import translate from "./src/modules/translator"
 import Utils from "./src/modules/utils"
 import Config from "./src/modules/config";
 import App from './src/modules/app';
-import Storage from './src/modules/storage';
+import StorageClass, { Storage } from './src/modules/storage';
 import Time from './src/modules/time';
 import EventListener from "./src/modules/event-listener";
 import CircleImage from './src/widgets/circle-image/circle-image.vue';
@@ -27,7 +27,7 @@ import Burger from "./src/widgets/burger/burger.vue";
 import EventCalendar from "./src/widgets/event-calendar/event-calendar.vue";
 import Checkbox from "./src/widgets/checkbox/checkbox.vue";
 import Validator from "./src/modules/validator";
-import Store from "./src/modules/store";
+import StoreClass, { Store } from "./src/modules/store";
 import SocialShare from "./src/widgets/social-share/social-share.vue";
 import type IOption from "./src/interfaces/IOption";
 import type IAppConfig from "./src/interfaces/IAppConfig";
@@ -40,6 +40,9 @@ import TextImage from './src/widgets/textimage/textimage.vue';
 import VideoBackground from "./src/widgets/video-background/video-background.vue";
 import CodeBlock from "./src/widgets/code-block/code-block.vue";
 import HeadManager from "./src/modules/head-manager";
+import LoginPage from "./src/templates/login-page/login-page.vue";
+import Model from "./src/modules/model";
+import IRoutes from "./src/interfaces/IRouter";
 
 export {
     Utils,
@@ -53,12 +56,14 @@ export {
     Validator,
     Store,
     HeadManager,
+    Model,
 
     // Types
     HTTPError,
     Request,
     IOption,
     IAppConfig,
+    IRoutes,
     Table,
     PaginatorStructure,
     AppFormField,
@@ -88,5 +93,8 @@ export {
     Ripple,
     TextImage,
     VideoBackground,
-    CodeBlock
+    CodeBlock,
+
+    // Templates
+    LoginPage
 }
