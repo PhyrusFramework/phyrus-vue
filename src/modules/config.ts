@@ -1,21 +1,35 @@
 import IAppConfig from "../interfaces/IAppConfig";
 import ILanguageConfig from "../interfaces/ILanguageConfig";
+import PackageState from "./PackageState";
 import utils from "./utils";
 
 export default class Config {
 
-    private static _config : IAppConfig;
-    public static values() : any { return Config._config ? Config._config.config : {} }
-    public static layouts() : any { return Config._config && Config._config.layouts ? Config._config.layouts : {} }
-    public static languageConfig() : ILanguageConfig {
-        const c = Config._config.language;
-        return c ? c : {
-            default: 'en'
-        }
+    public static values() : any { 
+        const config = PackageState.get('config');
+        return config ?? {}
     }
 
-    static init(config: IAppConfig) {
-        Config._config = config;
+    public static layouts() : any { 
+        const layouts = PackageState.get('layouts');
+        return layouts ?? {}
+    }
+
+    public static languageConfig() : ILanguageConfig {
+
+        const config = PackageState.get('config');
+        if (config && config.language) {
+            return config.language;
+        }
+
+        return {default: 'en'}
+    }
+
+    static init(config: IAppConfig, layouts?: any) {
+        PackageState.set('config', config);
+        if (layouts) {
+            PackageState.set('layouts', layouts);
+        }
     }
 
     public static get(key: string) : any {

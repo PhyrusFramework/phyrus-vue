@@ -1,5 +1,5 @@
 <template>
-    <div id="app-modals">
+    <div id="app-modals" v-if="modals && modals.length > 0">
         <Dialog v-for="(modal, index) in modals" :key="index" v-model:visible="modal.visible" :modal="modal.background"
         :header="modal.title" :breakpoints="modal.breakpoints" :draggable="modal.draggable" :position="modal.position"
         :maximizable="modal.maximizable"

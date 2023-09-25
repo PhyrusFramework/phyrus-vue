@@ -1,4 +1,4 @@
-import { defineComponent, PropType } from "vue";
+import { defineComponent } from "vue";
 import HeadManager from "../../modules/head-manager";
 import Config from "../../modules/config";
 import AppGlobalWidgets from "../app-global-widgets/app-global-widgets.vue";

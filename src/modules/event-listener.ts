@@ -1,35 +1,49 @@
+import PackageState from "./PackageState";
 
 export default class EventListener {
 
-    static events : any = {}
+    //static events : any = {}
+
+    private static createEvents() {
+        const events = {}
+        PackageState.set('events', events)
+        return events;
+    }
 
     static on(event: string, action: string, callback: (param?: any) => void) {
 
-        if (!this.events[event]) {
-            this.events[event] = {}
+        let events = PackageState.get('events');
+        if (!events) {
+            events = this.createEvents();
+        }
+
+        if (!events[event]) {
+            events[event] = {}
         }
 
         let ac = action;
         if (ac == '*') {
             ac = "" + Math.random() * 1000;
-            while(this.events[event][ac]) {
+            while(events[event][ac]) {
                 ac = "" + Math.random() * 1000;
             }
         }
 
-        this.events[event][ac] = callback;
+        events[event][ac] = callback;
     }
 
     static trigger(event: string, param?: any) : Promise<any[]> {
 
         return new Promise((resolve, reject) => {
 
-            if (!this.events[event]) {
+            const events = PackageState.get('events');
+
+            if (!events || !events[event]) {
                 resolve([]);
                 return;
             }
     
-            this._trigger(event, Object.keys(this.events[event]), param)
+            this._trigger(event, Object.keys(events[event]), param)
             .then((returns: any) => {
                 resolve(returns);
             });
@@ -49,7 +63,9 @@ export default class EventListener {
 
             const key = keys[0];
 
-            const func = this.events[event][key];
+            const events = PackageState.get('events');
+
+            const func = events[event][key];
             if (!func) {
                 resolve(returns);
                 return;
@@ -80,19 +96,25 @@ export default class EventListener {
     }
 
     static resetEvent(event: string) {
-        this.events[event] = null;
-        delete this.events[event];
+        const events = PackageState.get('events');
+        if (!events) return;
+        events[event] = null;
+        delete events[event];
     }
 
     static destroy(event: string, action: string) {
-        if (!this.events[event]) return;
-        if (!this.events[event][action]) return;
-        this.events[event][action] = null;
-        delete this.events[event][action];
+        const events = PackageState.get('events');
+        if (!events) return;
+        if (!events[event]) return;
+        if (!events[event][action]) return;
+        events[event][action] = null;
+        delete events[event][action];
     }
 
     static existsEvent(event: string) {
-        if (!this.events[event]) return false;
+        const events = PackageState.get('events');
+        if (!events) return false;
+        if (!events[event]) return false;
         return true;
     }
 

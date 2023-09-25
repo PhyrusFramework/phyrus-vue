@@ -1,6 +1,6 @@
 import ILanguageConfig from "./ILanguageConfig";
 
-export default interface IAppConfig {
+interface IAppConfig {
     [key: string]: any,
     language?: ILanguageConfig,
     primevue?: {
@@ -12,3 +12,4 @@ export default interface IAppConfig {
         locale?: any
     }
 }
+export default IAppConfig;

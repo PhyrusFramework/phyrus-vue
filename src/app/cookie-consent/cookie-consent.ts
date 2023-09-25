@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue';
 import translate from '../../modules/translator';
-import Storage from '../../modules/storage';
+import { Storage } from '../../modules/storage';
 import App from '../../modules/app';
 import CookieDialog from './cookie-dialog/cookie-dialog.vue';
 import Config from '../../modules/config';

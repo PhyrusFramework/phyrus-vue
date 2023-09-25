@@ -3,8 +3,6 @@ import Message from 'primevue/message';
 import utils from '../../modules/utils';
 
 export type AppNotificationsInterface = {
-    _ref: any,
-    setReference: (ref: any) => void,
     closeNotification: (notification: any) => void,
     closeLast: () => void,
     closeFirst: () => void

@@ -1,6 +1,7 @@
 import IRoute from "./IRoute";
 
-export default interface IRouter {
+interface IRoutes {
     layouts?: any,
     routes: IRoute[],
 }
+export default IRoutes;

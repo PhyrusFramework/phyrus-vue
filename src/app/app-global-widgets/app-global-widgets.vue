@@ -3,7 +3,6 @@
         <drawer ref="appDrawer"/>
         <app-notifications ref="appNotifications"/>
         <app-modal ref="appModal"/>
-        <cookie-consent ref="cookieConsent"/>
     </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-    <transition-group class="app-notifications" name="p-message" tag="div">
+    <transition-group class="app-notifications" name="p-message" tag="div" v-if="notifications && notifications.length > 0">
         <Message v-for="notification of notifications" :key="notification.id" 
         class="notification"
         :class="classForElement(notification)"

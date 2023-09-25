@@ -5,8 +5,6 @@ import { AppModalInterface, ModalOptions, ModalType } from '../app/app-modal/app
 import { AppNotification, AppNotificationsInterface } from '../app/app-notifications/app-notifications';
 import { DrawerInterface, DrawerOptions } from '../app/drawer/drawer';
 import translate from './translator';
-import { CookieConsentInterface, CookieType } from '../app/cookie-consent/cookie-consent';
-import AppPage from '../app/app-page/app-page.vue';
 import IAppConfig from '../interfaces/IAppConfig';
 import Config from './config';
 import Container from '../widgets/grid/cntainer.vue';
@@ -20,26 +18,26 @@ import http from './http';
 import IButton from '../interfaces/IButton';
 import baseComponent from '../app/base-component';
 import { markRaw } from 'vue';
-import IRouter from '../interfaces/IRouter';
+import IRoutes from '../interfaces/IRoutes';
+import PackageState from './PackageState';
 
-export default class App {
+class AppClass {
 
-    static init(app: any, config: IAppConfig, routes: IRouter) {
+    init(app: any, config: IAppConfig, routes: IRoutes) {
 
-        Config.init(config);
+        Config.init(config, routes.layouts);
         http.loadTokenFromStorage();
 
         const router = createRouter({
             history: createWebHistory(),
-            routes: routes,
+            routes: routes.routes,
         });
         app.use(router);
 
         app.use(PrimeVue, config.primevue);
-        app.mixin(baseComponent);
+        app.mixin(baseComponent(this));
 
         // Register global components
-        app.component('app-page', AppPage);
         app.component('container', Container);
         app.component('Container', Container);
         app.component('row', Row);
@@ -78,52 +76,52 @@ export default class App {
         return app;
     }
 
-    static drawer : DrawerInterface = {
-
-        _ref: null,
-        setReference(ref: any) {
-            this._ref = ref;
-        },
+    drawer : DrawerInterface = {
 
         setTitle(title: string) {
-            if (!this._ref) return App.drawer;
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.drawer) return this;
 
-            this._ref.title = title;
-            return App.drawer;
+            ref.drawer.title = title;
+            return this;
         },
 
         setButtons(buttons: IButton[]) {
-            if (!this._ref) return App.drawer;
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.drawer) return this;
 
-            this._ref.buttons = buttons
-            return App.drawer;
+            ref.drawer.buttons = buttons
+            return this;
         },
 
         onClose(func: () => any) {
-            if (!this._ref) return App.drawer;
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.drawer) return this;
 
-            this._ref.onClose = func;
-            return App.drawer;
+            ref.drawer.onClose = func;
+            return this;
         },
 
         open(options: DrawerOptions) {
-            if (!this._ref) return;
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.drawer) return this;
 
-            this._ref.open(options);
-            return App.drawer;
+            ref.drawer.open(options);
+            return this;
         },
 
         close() {
-            if (!this._ref) {
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.drawer) {
                 return new Promise((resolve,reject) => {});
             }
 
-            return this._ref.close();
+            return ref.drawer.close();
         }
 
     };
 
-    static notification(text: string = '') {
+    notification(text: string = '') {
 
         const notifications = this.notifications;
 
@@ -161,151 +159,148 @@ export default class App {
                 return this;
             },
             show() {
-                if (!notifications._ref) return;
-                notifications._ref.add(this);
+                const ref = PackageState.get('globalWidgets');
+                if (!ref || !ref.notifications) return;
+
+                ref.notifications.add(this);
             }
         }
 
         return builder;
     }
 
-    static notifications : AppNotificationsInterface = {
-
-        _ref: null,
-        setReference(ref: any) {
-            this._ref = ref;
-        },
+    notifications : AppNotificationsInterface = {
 
         closeNotification(notification: any) {
-            if (!this._ref) return;
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.notifications) return;
 
-            this._ref.closeNotification(notification);
+            ref.notifications.closeNotification(notification);
         },
 
         closeLast() {
-            if (!this._ref) return;
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.notifications) return;
 
-            this._ref.closeLast();
+            ref.notifications.closeLast();
         },
         closeFirst() {
-            if (!this._ref) return;
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.notifications) return;
 
-            this._ref.closeFirst();
+            ref.notifications.closeFirst();
         }
 
     }
 
-    static modal : AppModalInterface = {
+    modal : AppModalInterface = {
 
-        _ref: null,
-        setReference(ref: any) {
-            this._ref = ref;
-        },
-    
         open(options: ModalOptions) {
-            if (!this._ref) {
-                return;
-            }
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.modal) return;
 
-            this._ref.open(options);
+            ref.modal.open(options);
         },
 
         get current() : ModalType|null {
-            if (!this._ref) return null;
-            if (this._ref.modals.length == 0) return null;
-            return this._ref.modals[this._ref.modals.length - 1];
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.modal) return null;
+
+            if (ref.modal.modals.length == 0) return null;
+            return ref.modal.modals[ref.modal.modals.length - 1];
         },
     
         close() {
-            if (!this._ref) {
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.modal) {
                 return new Promise((resolve, reject) => {});
             }
 
-            return this._ref.close();
+            return ref.modal.close();
         },
 
         setTitle(title: string) {
-            if (!this._ref) {
-                return
-            }
-            this._ref.setTitle(title);
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.modal) return;
+
+            ref.modal.setTitle(title);
         },
 
         noCloseX() {
-            if (!this._ref) {
-                return
-            }
-            this._ref.noCloseX();
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.modal) return;
+
+            ref.modal.noCloseX();
         },
 
         noBackground() {
-            if (!this._ref) {
-                return
-            }
-            this._ref.noBackground();
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.modal) return;
+
+            ref.modal.noBackground();
         },
 
         draggable() {
-            if (!this._ref) {
-                return
-            }
-            this._ref.draggable();
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.modal) return;
+
+            ref.modal.draggable();
         },
 
         maximizable() {
-            if (!this._ref) {
-                return
-            }
-            this._ref.maximizable();
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.modal) return;
+
+            ref.modal.maximizable();
         },
 
         cancelable() {
-            if (!this._ref) {
-                return
-            }
-            this._ref.cancelable();
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.modal) return;
+
+            ref.modal.cancelable();
         },
 
         noPadding() {
-            if (!this._ref) {
-                return
-            }
-            this._ref.noPadding();
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.modal) return;
+
+            ref.modal.noPadding();
         },
 
         setButtons(buttons: IButton[]) {
-            if (!this._ref) {
-                return
-            }
-            this._ref.setButtons(buttons);
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.modal) return;
+
+            ref.modal.setButtons(buttons);
         },
 
         onClose(callback: () => void) {
-            if (!this._ref) {
-                return
-            }
-            this._ref.onClose(callback);
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.modal) return;
+
+            ref.modal.onClose(callback);
         },
 
         onMaximize(callback: (open: boolean) => void) {
-            if (!this._ref) {
-                return
-            }
-            this._ref.onMaximize(callback);
+            const ref = PackageState.get('globalWidgets');
+            if (!ref || !ref.modal) return;
+
+            ref.modal.onMaximize(callback);
         }
 
     }
 
-    static alert(text: string) {
+    alert(text: string) {
         
-        App.modal.open({
+        this.modal.open({
             html: text,
             class: 'alert-modal'
         })
 
     }
 
-    static confirm(text: string, options?: {
+    confirm(text: string, options?: {
         icon?: string|null,
         yes?: string,
         no?: string
@@ -313,7 +308,7 @@ export default class App {
 
         return new Promise((resolve, reject) => {
 
-            App.modal.open({
+            this.modal.open({
                 html: text,
                 closex: false,
                 class: 'confirm-modal',
@@ -321,14 +316,14 @@ export default class App {
                     {
                         content: options && options.no ? options.no : translate.get('generic.no'),
                         onClick: () => {
-                            App.modal.close();
+                            this.modal.close();
                             resolve(false);
                         }
                     },
                     {
                         content: options && options.yes ? options.yes : translate.get('generic.yes'),
                         onClick: () => {
-                            App.modal.close();
+                            this.modal.close();
                             resolve(true);
                         } 
                     }
@@ -353,7 +348,7 @@ export default class App {
 
     static stopLoading() {
         this.modal.close();
-    }*/
+    }
 
     static cookieConsent : CookieConsentInterface = {
 
@@ -377,6 +372,9 @@ export default class App {
             this._ref.addType(type);
         }
 
-    }
+    }*/
 
 }
+
+const App = new AppClass();
+export default App;

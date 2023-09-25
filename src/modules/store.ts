@@ -1,12 +1,24 @@
+import PackageState from "./PackageState";
 
 export default class StoreClass {
-
-    private _getters: any = {}
+    
+    private createStore() {
+        const obj = {
+            getters: {}
+        }
+        PackageState.set('store', obj);
+        return obj;
+    }
 
     public getter(key: string, loader?: () => Promise<any>) {
 
-        if (!this._getters[key]) {
-            this._getters[key] = {
+        let store : any = PackageState.get('store');
+        if (!store) {
+            store = this.createStore();
+        }
+
+        if (!store.getters[key]) {
+            store.getters[key] = {
                 value: undefined,
                 loader,
                 listeners: [],
@@ -14,9 +26,9 @@ export default class StoreClass {
             }
         }
         else {
-            this._getters[key].loader = loader;
+            store.getters[key].loader = loader;
 
-            if (this._getters[key].listeners.length > 0) {
+            if (store.getters[key].listeners.length > 0) {
                 this.get(key);
             }
         }
@@ -24,9 +36,13 @@ export default class StoreClass {
     }
 
     public clear(key:string) {
-        if (this._getters[key]) {
-            this._getters[key].value == undefined;
-            this._getters[key].status = 'none';
+
+        const store : any = PackageState.get('store');
+        if (!store) return;
+
+        if (store.getters[key]) {
+            store.getters[key].value == undefined;
+            store.getters[key].status = 'none';
         }
     }
 
@@ -42,25 +58,30 @@ export default class StoreClass {
     }
 
     public getSync(key: string) {
-        if (!this._getters[key]) {
-            return null;
+
+        const store : any = PackageState.get('store');
+        if (!store) return undefined;
+
+        if (!store.getters[key]) {
+            return undefined;
         }
 
-        const g = this._getters[key];
-
-        if (g.value !== undefined) {
-            return g.value;
-        }
+        return store.getters[key].value;
     }
 
     public get(key:string, loader?: () => Promise<any>) {
         return new Promise((resolve, reject) => {
 
-            if (!this._getters[key]) {
+            let store : any = PackageState.get('store');
+            if (!store) {
+                store = this.createStore();
+            }
+
+            if (!store.getters[key]) {
                 this.getter(key, loader);
             }
     
-            const g = this._getters[key];
+            const g = store.getters[key];
 
             if (g.value === undefined) {
 

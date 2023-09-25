@@ -2,8 +2,8 @@ import Validator from "./validator";
 
 type UtilsType = {
     queryParams: () => any,
-    setQueryParams: (params: any, keepCurrentParams: boolean) => void,
-    dotNotation: (arr: any, key: string, defaultValue: string|null) => any,
+    setQueryParams: (params: any, keepCurrentParams?: boolean) => void,
+    dotNotation: (arr: any, key: string, defaultValue?: string|null) => any,
     invertList: (arr: any[]) => any[],
     areEqual: (a: any, b: any) => boolean,
     copy: (obj: any, options?: {
@@ -19,7 +19,7 @@ type UtilsType = {
     randomString: (length: number) => string,
     rand: (max: number) => number,
     force: (obj: any, defaultValues: any) => any,
-    merge: (objA: any, objB: any, mergeArrays: boolean) => any,
+    merge: (objA: any, objB: any, mergeArrays?: boolean) => any,
     scrollBottomReached: (e: any, threshold : number) => any,
     fileToSrc: (file: any) => Promise<any>,
     fetchFile: (path: string, fileName: string) => Promise<File>,

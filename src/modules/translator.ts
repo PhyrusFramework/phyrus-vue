@@ -1,16 +1,18 @@
 import Utils from './utils';
 import { locales as def } from './locales/locales';
 import Config from './config';
+import PackageState from './PackageState';
 
 class Translator {
 
-    locales: any;
-    currentLanguage = 'en';
-    translations : any = {}
-
-    cache: any = {}
-
     initialize(locales: any) {
+
+        let obj = PackageState.get('translations');
+        if (obj) return;
+
+        obj = {
+            cache: {}
+        }
 
         let defaultLanguage = Config.get('language.default');
         if (!defaultLanguage) {
@@ -21,32 +23,43 @@ class Translator {
             if (!def[lang]) return;
             locales[lang] = Utils.merge(def[lang], locales[lang]);
         });
-        this.locales = locales;
+
+        obj['locales'] = locales;
 
         const userLang = navigator.language.substr(0, 2);
-        this.currentLanguage = (Object.keys(locales)).includes(userLang) ?
+        obj['currentLanguage'] = (Object.keys(locales)).includes(userLang) ?
             userLang : defaultLanguage;
 
-        this.translations = locales[this.currentLanguage];
+        obj['translations'] = locales[obj['currentLanguage']];
+
+        PackageState.set('translations', obj);
     }
 
     get supportedLanguages() : string[] {
-        return Object.keys(this.translations);
+        const obj = PackageState.get('translations');
+        if (!obj) return [Config.get('language.default')];
+        return Object.keys(obj.translations);
     }
 
     changeLanguage(language: string) {
-        if (!(Object.keys(this.locales)).includes(language)) return;
-        this.cache = {};
-        this.currentLanguage = language;
-        this.translations = this.locales[this.currentLanguage];
+        const obj = PackageState.get('translations');
+        if (!obj) return;
+
+        if (!(Object.keys(obj.locales)).includes(language)) return;
+        obj.cache = {};
+        obj.currentLanguage = language;
+        obj.translations = obj.locales[obj.currentLanguage];
     }
 
-    get(key: string, parameters?: any) {
-        let trans = 
-        this.cache[key] ? this.cache[key] :
-        Utils.dotNotation(this.translations, key);
+    get(key: string, parameters?: any) : string {
+        const obj = PackageState.get('translations');
+        if (!obj) return '';
 
-        this.cache[key] = trans;
+        let trans = 
+        obj.cache[key] ? obj.cache[key] :
+        Utils.dotNotation(obj.translations, key);
+
+        obj.cache[key] = trans;
 
         if (parameters) {
             Object.keys(parameters).forEach((k: string) => {

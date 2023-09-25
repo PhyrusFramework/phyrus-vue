@@ -45,9 +45,6 @@ export type ModalOptions = {
 
 export type AppModalInterface = {
 
-    _ref: any,
-    setReference: (ref: any) => void,
-
     open: (options: ModalOptions) => void,
 
     current: ModalType|null,

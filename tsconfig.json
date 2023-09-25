@@ -1,16 +1,25 @@
 {
     "compilerOptions": {
       "experimentalDecorators": true,
-      "target": "ES2018",
+      "target": "ESNext",
       "module": "ESNext",
       "moduleResolution": "Node",
       "lib": [
         "ESNext",
         "ESNext.AsyncIterable",
-        "DOM"
+        "DOM",
+        "dom.iterable",
+        "scripthost"
       ],
+      "jsx": "preserve",
+      "importHelpers": true,
+      "resolveJsonModule": true,
+      "skipLibCheck": true,
       "esModuleInterop": true,
       "allowJs": true,
+      "allowSyntheticDefaultImports": true,
+      "forceConsistentCasingInFileNames": true,
+      "useDefineForClassFields": true,
       "sourceMap": true,
       "strict": true,
       "noEmit": true,
@@ -24,6 +33,7 @@
         ]
       },
       "types": [
+        "jest",
         "@types/node",
         "vite/client"
       ]

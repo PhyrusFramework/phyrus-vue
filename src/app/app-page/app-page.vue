@@ -1,11 +1,13 @@
 <template>
-    <AppGlobalWidgets />
+    <AppGlobalWidgets ref="globalWidgets"/>
     <component :is="getLayout()" :name="name" v-bind="{page: () => this}">
         <template v-if="loading">
             <component :is="loadscreenComponent" v-if="loadscreenComponent" />
             <loader v-else/>
         </template>
-        <slot v-else :page="this"/>
+        <template v-else>
+            <slot v-bind="{page: () => this}"/>
+        </template>
     </component>
 </template>
 

@@ -14,9 +14,6 @@ export type DrawerOptions = {
 };
 
 export type DrawerInterface = {
-    _ref: any,
-    setReference: (ref: any) => void,
-
     setTitle: (title: string) => void,
     setButtons : (buttons: IButton[]) => void,
     onClose: (func: () => any) => void,
