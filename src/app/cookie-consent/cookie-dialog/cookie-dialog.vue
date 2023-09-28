@@ -1,27 +1,22 @@
 <template>
-    <div>
+    <div id="cookie-consent-dialog">
         <div class="flex-row">
-            <h2 class="flex-grow">{{ $t('cookies.configure') }}</h2>
-
-            <close-x @click="closeModal()"/>
+            <h2 class="flex-grow" v-html="$t('cookies.configure')"/>
         </div>
 
-        <p>{{ $t('cookies.dialog') }}</p>
+        <p v-html="$t('cookies.dialog')"/>
+        <br>
 
         <p v-html="$t('cookies.required')" />
         <p class="always">{{ $t('cookies.always') }}</p>
+        <br><br>
 
-        <div v-for="type of types" :key="type.id">
-            <p><b>{{type.name}}</b>: {{type.description}}</p>
-
-            <!-- TODO <toggle v-model="type.accepted" size="medium"
-            activeColor="white"
-            inactiveColor="white"
-            activeBackgroundColor="var(--primary-color)"
-            inactiveBackgroundColor="gray" /> -->
+        <div v-for="type of types" :key="type.id" class="flex-row gap10">
+            <InputSwitch v-model="type.accepted"/>
+            <div><b v-html="type.name"/>: <span v-html="type.description"/></div>
         </div>
 
-        <div class="flex-row buttons">
+        <div class="flex-row gap10 buttons">
             <div class="flex-grow"/>
 
             <btn @click="reject()">{{ $t('cookies.all.reject') }}</btn>

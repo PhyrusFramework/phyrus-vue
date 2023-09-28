@@ -1,8 +1,11 @@
 import { defineComponent, PropType } from 'vue';
 import App from '../../../modules/app';
 import translate from '../../../modules/translator';
+import InputSwitch from 'primevue/inputswitch';
 
 export default defineComponent({
+
+    components: { InputSwitch },
 
     props: {
         types: {

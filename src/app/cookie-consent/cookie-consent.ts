@@ -4,12 +4,11 @@ import { Storage } from '../../modules/storage';
 import App from '../../modules/app';
 import CookieDialog from './cookie-dialog/cookie-dialog.vue';
 import Config from '../../modules/config';
+import PackageState from '~/modules/PackageState';
 
 export type CookieConsentInterface = {
-    _ref: any,
-    _pendingTypes: CookieType[],
-    setReference: (ref: any) => void,
-    addType: (type: CookieType) => void
+    addType: (type: CookieType) => void,
+    getPreferences: () => any
 }
 
 export type CookieType = {
@@ -36,6 +35,16 @@ export default defineComponent({
     created() {
         const use : any = Config.get('cookieConsent');
         this.cookiesAnswered = !use || !(!Storage.get('cookie-consent'));
+
+        const ref = PackageState.get('globalWidgets');
+
+        if (ref.cookiePendingTypes) {
+            for(const type of ref.cookiePendingTypes) {
+                this.addType(type);
+            }
+            ref.cookiePendingTypes = [];
+            delete ref['cookiePendingTypes'];
+        }
     },
 
     methods: {

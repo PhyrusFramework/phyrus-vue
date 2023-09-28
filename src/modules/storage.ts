@@ -13,10 +13,10 @@ export default class StorageClass {
 
     }
 
-    get (key: string) {
+    get (key: string, defaultValue: any = undefined) {
 
         const value = window.localStorage.getItem(key);
-        if (value == null) return;
+        if (value === null || value === undefined) return defaultValue;
 
         try {
             const val = JSON.parse(value);

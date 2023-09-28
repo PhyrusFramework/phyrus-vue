@@ -44,6 +44,7 @@ import Drawer from './src/app/drawer/drawer.vue';
 import AppNotifications from './src/app/app-notifications/app-notifications.vue';
 import AppModal from './src/app/app-modal/app-modal.vue';
 import AppGlobalWidgets from './src/app/app-global-widgets/app-global-widgets.vue';
+import CookieConsent from './src/app/cookie-consent/cookie-consent.vue';
 
 export {
     Utils,
@@ -94,5 +95,6 @@ export {
     Ripple,
     TextImage,
     VideoBackground,
-    CodeBlock
+    CodeBlock,
+    CookieConsent
 }

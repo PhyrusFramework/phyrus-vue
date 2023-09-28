@@ -8,3 +8,9 @@
 .p-colorpicker-panel {
     z-index: 100 !important;
 }
+.p-dialog-header {
+    width: 100%;
+}
+.p-dialog.p-component {
+    box-shadow: none;
+}

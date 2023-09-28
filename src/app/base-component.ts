@@ -65,10 +65,10 @@ export default (App: any) => {
                 this._updateCheck += 1;
             },
     
-            $t(key: string, params?: any) {
+            $t(key: string, params?: any) : string {
                 return translate.get(key, params);
             },
-            hasEvent(name: string) {
+            hasEvent(name: string) : boolean {
                 return this.$attrs && !(!this.$attrs['on' + utils.capitalize(name)]);
             },
     
@@ -92,7 +92,7 @@ export default (App: any) => {
                 return App.drawer.close();
             },
     
-            hasSlot(name: string) {
+            hasSlot(name: string) : boolean {
                 return !!this.$slots[name];
             }
         }

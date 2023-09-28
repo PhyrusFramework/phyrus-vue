@@ -16,7 +16,7 @@ const { join, basename, resolve, dirname } = require('path');
 const dir = ARGS.commands[0];
 const output = ARGS.commands[1];
 
-const src = resolve(dirname(require.main.filename) + '/..');
+const src = resolve(dirname('./') + '/src');
 const folder = src + (dir[0] == '/' ? dir : '/'+dir);
 
 const outputFile = src + '/public/svg-icons/' + output;

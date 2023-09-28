@@ -4,6 +4,7 @@ import Ripple from 'primevue/ripple';
 import { AppModalInterface, ModalOptions, ModalType } from '../app/app-modal/app-modal';
 import { AppNotification, AppNotificationsInterface } from '../app/app-notifications/app-notifications';
 import { DrawerInterface, DrawerOptions } from '../app/drawer/drawer';
+import { CookieConsentInterface, CookieType } from '../app/cookie-consent/cookie-consent';
 import translate from './translator';
 import IAppConfig from '../interfaces/IAppConfig';
 import Config from './config';
@@ -20,6 +21,8 @@ import baseComponent from '../app/base-component';
 import { markRaw } from 'vue';
 import IRoutes from '../interfaces/IRoutes';
 import PackageState from './PackageState';
+import { Storage } from './storage';
+import ScreenLoader from '../modals/screen-loader/screen-loader.vue';
 
 class AppClass {
 
@@ -334,45 +337,47 @@ class AppClass {
 
     }
 
-    /*
-    TODO
-    static loading() {
+    loaderComponent = ScreenLoader;
+    loading() {
         this.modal.open({
-            component: ScreenLoader,
+            component: this.loaderComponent,
             class: 'fullscreen-loader-modal',
+            closex: false,
             props: {
                 color: 'white'
             }
         });
     }
 
-    static stopLoading() {
+    stopLoading() {
         this.modal.close();
     }
-
-    static cookieConsent : CookieConsentInterface = {
-
-        _ref: null,
-        setReference(ref: any) {
-            this._ref = ref;
-
-            for(const t of this._pendingTypes) {
-                ref.addType(t);
-            }
-            this._pendingTypes = [];
-        },
-
-        _pendingTypes: [],
+    cookieConsent : CookieConsentInterface = {
 
         addType(type: CookieType) {
-            if (!this._ref) {
-                this._pendingTypes.push(type);
-                return;
+            const ref = PackageState.get('globalWidgets');
+
+            if (!ref.cookieConsent) {
+                if (!ref.cookiePendingTypes) {
+                    ref['cookiePendingTypes'] = [];
+                }
+                ref.cookiePendingTypes.push(type);
+            } else {
+                ref.cookieConsent.addType(type);
             }
-            this._ref.addType(type);
+        },
+
+        getPreferences() {
+            const prefs = Storage.get('cookie-consent');
+            if (!prefs) {
+                return {accepted: false}
+            }
+
+            prefs['accepted'] = true;
+            return prefs;
         }
 
-    }*/
+    }
 
 }
 

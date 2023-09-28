@@ -11,7 +11,7 @@ if (ARGS.commands.length < 1) {
 let name = ARGS.commands[0];
 let route = '';
 
-const src = resolve(dirname(require.main.filename) + '/../src');
+const src = resolve(dirname('./') + '/src');
 
 let folder = src + "/layouts";
 

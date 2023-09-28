@@ -1,31 +1,25 @@
-.cookie-configuration {
-    align-items: flex-start;
-    padding: 50px;
+#cookie-consent-dialog {
 
-    .app-modal-box {
-        max-width: 500px;
+    h2 {
+        margin: 0;
+    }
 
-        h2 {
-            margin: 0;
-        }
+    .always {
+        font-weight: bold;
+        font-size: 13px;
+    }
 
-        .always {
-            font-weight: bold;
-            font-size: 13px;
-        }
+    .buttons {
+        margin-top: 30px;
 
-        .buttons {
-            margin-top: 30px;
+        .btn {
+            margin-left: 15px;
+            background-color: transparent;
+            padding: 0;
+            color: var(--primary-color);
 
-            .app-button {
-                margin-left: 15px;
-                background-color: transparent;
-                padding: 0;
-                color: var(--primary-color);
-
-                &:hover {
-                    text-decoration: underline;
-                }
+            &:hover {
+                text-decoration: underline;
             }
         }
     }

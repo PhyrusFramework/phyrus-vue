@@ -11,8 +11,7 @@ if (ARGS.commands.length < 1) {
 let name = ARGS.commands[0];
 let route = '';
 
-const src = resolve(dirname(require.main.filename) + '/../src');
-
+const src = resolve(dirname('./') + '/src');
 let folder = src + "/pages";
 
 const parts = name.split('/');
@@ -108,44 +107,51 @@ let configFile = src + '/config/routes.ts';
 
 function addRouteToFile (file) {
 
-    const allContents = fs.readFileSync(file).toString();
-
-    let hadImport = true;
+    let allContents = fs.readFileSync(file).toString();
     let str = '';
-    allContents.split(/\r?\n/).forEach((line) => {
-        if (hadImport) {
-    
-            if (!line.includes('import ')) {
-                hadImport = false;
-                str += "import "+upperName+"Page from './pages/"+name+"/"+name+".vue';\n" + line + "\n";
-            } else {
-                str += line + "\n";
-            }
-        } else {
-    
-            if (!line.includes('//ADDROUTE')) {
-                str += line + "\n";
-            }
-            else {
-                str += `        {
+
+    // ADD IMPORT
+    let index = allContents.lastIndexOf('IRoutes');
+
+    let openIndex = index;
+    while(openIndex > 1 && allContents[openIndex] != ";") {
+        openIndex -= 1;
+    }
+
+    if (openIndex <= 1) return;
+    openIndex += 1;
+
+    str = allContents.substring(0, openIndex);
+    str += "\n" + "import "+upperName+"Page from './pages/"+name+"/"+name+".vue';";
+    str += allContents.substring(openIndex);
+
+    allContents = str;
+
+    // ADD ROUTE
+
+    index = allContents.lastIndexOf("[CLI]");
+    if (index < 0) {
+        return;
+    }
+
+    openIndex = index;
+    while(openIndex > 1 && allContents[openIndex] != "\n") {
+        openIndex -= 1;
+    }
+
+    if (openIndex <= 1) return;
+    openIndex += 1;
+
+    str = allContents.substring(0, openIndex);
+    str += `        {
             path: '${route}',
             component: ${upperName}Page
-        },
-        //ADDROUTE\n`;
-            }
-    
-        }
-    });
+        },\n`;
+    str += allContents.substring(openIndex);
     
     fs.writeFileSync(file, str);
-
 }
 
 if (fs.existsSync(configFile)) {
-
-    const content = fs.readFileSync(configFile);
-    if (content.includes('//ADDROUTE')) {
-        addRouteToFile(configFile);
-    }
-
+    addRouteToFile(configFile);
 }

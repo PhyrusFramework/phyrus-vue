@@ -5,7 +5,7 @@
 
         <p>{{ $t('cookies.text') }}</p>
 
-        <div class="flex-row bottom">
+        <div class="flex-row gap10 bottom">
             <div class="flex-grow" />
 
             <btn class="plain" v-if="types.length > 0"
