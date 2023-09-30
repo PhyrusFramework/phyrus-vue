@@ -32,7 +32,7 @@ export default class Config {
         }
     }
 
-    public static get(key: string) : any {
-        return utils.dotNotation(Config.values(), key);
+    public static get(key: string, defaultValue: any = undefined) : any {
+        return utils.dotNotation(Config.values(), key, defaultValue);
     }
 }

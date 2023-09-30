@@ -74,18 +74,41 @@ if (!['class','composition','options']) {
 if (format == 'options') {
     fs.writeFileSync(folder + `/${name}.ts`, `import { defineComponent } from "vue";
 
-export defineComponent({
+export default defineComponent({
+
+    data() {
+        const data : {
+            // prop: Type
+        } = {
+            // prop: 'value'
+        }
+        return data;
+    },
+
+    created() { },
+    mounted() { },
+    
+    methods: {
+
+    }
 
 });`);
 }
 
 else if (format == 'composition') {
-    fs.writeFileSync(folder + `/${name}.ts`, `import { defineComponent } from '@vue/composition-api'
+    fs.writeFileSync(folder + `/${name}.ts`, `import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
+
+    created() { },
+    mounted() { },
+
     setup() {
+        // const value = ref("")
+
         return {
-            
+            // value,
+            // method() { }
         }
     },
 });`);

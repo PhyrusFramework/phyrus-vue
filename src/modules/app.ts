@@ -354,14 +354,36 @@ class AppClass {
     }
     cookieConsent : CookieConsentInterface = {
 
+        enable() {
+            const ref = PackageState.get('globalWidgets');
+
+            if (!ref || !ref.cookieConsent) {
+                PackageState.set('cookieConsentEnabled', true)
+            } else {
+                ref.cookieConsent.enable();
+            }
+        },
+
+        disable() {
+            const ref = PackageState.get('globalWidgets');
+
+            if (!ref || !ref.cookieConsent) {
+                PackageState.set('cookieConsentEnabled', false)
+            } else {
+                ref.cookieConsent.disable();
+            }
+        },
+
         addType(type: CookieType) {
             const ref = PackageState.get('globalWidgets');
 
-            if (!ref.cookieConsent) {
-                if (!ref.cookiePendingTypes) {
-                    ref['cookiePendingTypes'] = [];
+            if (!ref || !ref.cookieConsent) {
+                const list = PackageState.get('cookiePendingTypes');
+                if (list) {
+                    list.push(type);
+                } else {
+                    PackageState.set('cookiePendingTypes', [type])
                 }
-                ref.cookiePendingTypes.push(type);
             } else {
                 ref.cookieConsent.addType(type);
             }

@@ -16,11 +16,18 @@ export default {
 
     },
 
-    get(key: string) {
+    get(key: string) : any {
         const w = (window as any);
         let obj = w['_phyrusVue_'];
         if (!obj) return undefined;
         return obj[key];
+    },
+
+    delete(key: string) {
+        const w = (window as any);
+        let obj = w['_phyrusVue_'];
+        if (!obj) return;
+        delete obj[key];
     }
 
 }

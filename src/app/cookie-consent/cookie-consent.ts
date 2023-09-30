@@ -4,11 +4,13 @@ import { Storage } from '../../modules/storage';
 import App from '../../modules/app';
 import CookieDialog from './cookie-dialog/cookie-dialog.vue';
 import Config from '../../modules/config';
-import PackageState from '~/modules/PackageState';
+import PackageState from '../../modules/PackageState';
 
 export type CookieConsentInterface = {
     addType: (type: CookieType) => void,
-    getPreferences: () => any
+    getPreferences: () => any,
+    enable: () => void,
+    disable: () => void
 }
 
 export type CookieType = {
@@ -22,9 +24,11 @@ export default defineComponent({
 
     data() {
         const data : {
+            enabled: boolean,
             cookiesAnswered: boolean,
             types: CookieType[]
         } = {
+            enabled: false,
             cookiesAnswered: false,
             types: []
         };
@@ -33,23 +37,35 @@ export default defineComponent({
     },
 
     created() {
-        const use : any = Config.get('cookieConsent');
-        this.cookiesAnswered = !use || !(!Storage.get('cookie-consent'));
+        this.cookiesAnswered = !(!Storage.get('cookie-consent'));
 
-        const ref = PackageState.get('globalWidgets');
+        const ref = PackageState.get('cookiePendingTypes');
+        const enabled = PackageState.get('cookieConsentEnabled');
 
-        if (ref.cookiePendingTypes) {
-            for(const type of ref.cookiePendingTypes) {
+        if (enabled) {
+            this.enabled = true;
+            PackageState.delete('cookieConsentEnabled');
+        }
+
+        if (ref) {
+            for(const type of ref) {
                 this.addType(type);
             }
-            ref.cookiePendingTypes = [];
-            delete ref['cookiePendingTypes'];
+            PackageState.delete('cookiePendingTypes');
         }
     },
 
     methods: {
         $t(key: string) {
             return translate.get(key);
+        },
+
+        enable() {
+            this.enabled = true;
+        },
+
+        disable() {
+            this.enabled = false;
         },
 
         save(cookies: any) {

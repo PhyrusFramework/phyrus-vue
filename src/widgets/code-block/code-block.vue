@@ -1,6 +1,6 @@
 <template>
   <div
-    class="code_editor hljs"
+    class="code-block code_editor hljs"
     :class="{
       hide_header: withoutHeader,
       hide_language: !title && display_language === false && languageList.length < 2,
