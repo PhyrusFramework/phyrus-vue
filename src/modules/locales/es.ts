@@ -203,7 +203,6 @@ export const locale_es = {
         configure: "Configurar cookies",
         dialog: "Mediante este panel puede configurar las cookies según sus preferencias. Al pulsar Aceptar selección, se guardará la selección de cookies que hayas realizado.",
         required: '<b>Cookies necesarias</b>: Permiten el funcionamiento y la prestación de los servicios ofrecidos en el mismo, dichas cookies quedan excluidas del ámbito de aplicación del artículo 22.2 de la LSSI, y, por lo tanto, no es necesario obtener el consentimiento sobre su uso.',
-        always: 'Siempre activas',
         all: {
             accept: 'Aceptar todas',
             reject: 'Rechazar todas',

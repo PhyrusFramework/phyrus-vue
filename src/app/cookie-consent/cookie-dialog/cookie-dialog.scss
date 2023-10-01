@@ -4,9 +4,11 @@
         margin: 0;
     }
 
-    .always {
-        font-weight: bold;
-        font-size: 13px;
+    .cookie-type {
+        display: flex;
+        align-items: center;
+        flex: 10px;
+        margin-bottom: 15px;
     }
 
     .buttons {

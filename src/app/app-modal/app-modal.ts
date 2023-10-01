@@ -20,7 +20,8 @@ export type ModalType = {
     noPadding?: boolean,
     onClose?: () => void,
     visible: boolean,
-    buttons: IButton[]
+    buttons: IButton[],
+    close: () => void
 }
 
 export type ModalOptions = {
@@ -131,7 +132,8 @@ export default defineComponent({
                 noPadding: options.noPadding ? true : false,
                 onClose: options.onClose,
                 visible: true,
-                buttons: options.buttons ? options.buttons : []
+                buttons: options.buttons ? options.buttons : [],
+                close: () => { modal.visible = false }
             };
 
             this.modals.push(modal);
@@ -158,7 +160,7 @@ export default defineComponent({
 
         },
 
-        close() : Promise<any> {
+        close(modal?: ModalType) : Promise<any> {
             return new Promise((resolve, reject) => {
 
                 if (this.modals.length == 0) {
@@ -166,7 +168,7 @@ export default defineComponent({
                     return;
                 }
     
-                const last = this.modals[this.modals.length - 1];
+                const last = modal ? modal : this.modals[this.modals.length - 1];
                 last.visible = false;
             });
 

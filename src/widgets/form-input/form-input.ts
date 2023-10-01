@@ -50,7 +50,8 @@ export default defineComponent({
         modelValue: {},
 
         type: {
-            type: String as PropType<'text'
+            type: String as PropType<
+            'text'
             |'email'
             |'number'
             |'checkbox'

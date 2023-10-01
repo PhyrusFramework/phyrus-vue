@@ -56,6 +56,9 @@ export default (App: any) => {
             },
             $storage() : StorageClass {
                 return Storage;
+            },
+            $lang() : any {
+                return translate;
             }
         },
     

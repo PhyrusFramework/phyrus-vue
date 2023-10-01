@@ -3,13 +3,13 @@ import translate from '../../modules/translator';
 import { Storage } from '../../modules/storage';
 import App from '../../modules/app';
 import CookieDialog from './cookie-dialog/cookie-dialog.vue';
-import Config from '../../modules/config';
 import PackageState from '../../modules/PackageState';
 
 export type CookieConsentInterface = {
     addType: (type: CookieType) => void,
     getPreferences: () => any,
     enable: () => void,
+    reset: () => void,
     disable: () => void
 }
 
@@ -17,7 +17,8 @@ export type CookieType = {
     id: string,
     name: string,
     description: string,
-    accepted?: boolean
+    accepted?: boolean,
+    required?: boolean
 }
 
 export default defineComponent({
@@ -62,10 +63,22 @@ export default defineComponent({
 
         enable() {
             this.enabled = true;
+            setTimeout(() => {
+                this.$forceUpdate();
+            }, 5);
         },
 
         disable() {
             this.enabled = false;
+            setTimeout(() => {
+                this.$forceUpdate();
+            }, 5);
+        },
+
+        reset() {
+            Storage.remove('cookie-consent');
+            this.enabled = true;
+            this.$forceUpdate();
         },
 
         save(cookies: any) {

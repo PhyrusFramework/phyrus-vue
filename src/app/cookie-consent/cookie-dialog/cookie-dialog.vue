@@ -8,11 +8,10 @@
         <br>
 
         <p v-html="$t('cookies.required')" />
-        <p class="always">{{ $t('cookies.always') }}</p>
         <br><br>
 
-        <div v-for="type of types" :key="type.id" class="flex-row gap10">
-            <InputSwitch v-model="type.accepted"/>
+        <div v-for="type of types" :key="type.id" class="cookie-type">
+            <InputSwitch v-model="type.accepted" v-if="!type.required"/>
             <div><b v-html="type.name"/>: <span v-html="type.description"/></div>
         </div>
 

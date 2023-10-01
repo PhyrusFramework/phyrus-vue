@@ -35,8 +35,12 @@ if (fs.existsSync(folder + `/${name}.vue`)) {
 
 // Create vue file
 fs.writeFileSync(folder + `/${name}.vue`, `<template>
-    <app-page id="${name}-page">
+    <app-page layout="default">
+        <container id="${name}-page">
 
+            <h1>${name}</h1>
+
+        </container>
     </app-page>
 </template>
 
@@ -122,7 +126,7 @@ function addRouteToFile (file) {
     openIndex += 1;
 
     str = allContents.substring(0, openIndex);
-    str += "\n" + "import "+upperName+"Page from './pages/"+name+"/"+name+".vue';";
+    str += "\n" + "import "+upperName+"Page from '../pages/"+name+"/"+name+".vue';";
     str += allContents.substring(openIndex);
 
     allContents = str;

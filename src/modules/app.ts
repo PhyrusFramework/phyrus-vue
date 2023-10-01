@@ -364,6 +364,17 @@ class AppClass {
             }
         },
 
+        reset() {
+            const ref = PackageState.get('globalWidgets');
+
+            if (!ref || !ref.cookieConsent) {
+                Storage.remove('cookie-consent');
+                PackageState.set('cookieConsentEnabled', true)
+            } else {
+                ref.cookieConsent.reset();
+            }
+        },
+
         disable() {
             const ref = PackageState.get('globalWidgets');
 

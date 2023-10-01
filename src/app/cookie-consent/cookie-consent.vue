@@ -1,9 +1,9 @@
 <template>
-    <div id="cookie-consent-banner" v-if="!cookiesAnswered">
+    <div id="cookie-consent-banner" v-if="enabled && !cookiesAnswered">
 
-        <h3>{{ $t('cookies.title') }}</h3>
+        <h3 v-html="$t('cookies.title')" />
 
-        <p>{{ $t('cookies.text') }}</p>
+        <p v-html="$t('cookies.text')"/>
 
         <div class="flex-row gap10 bottom">
             <div class="flex-grow" />

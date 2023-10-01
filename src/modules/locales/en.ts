@@ -203,7 +203,6 @@ export const locale_en = {
         configure: "Configure cookies",
         dialog: "By using this panel you can configure the allowed cookies according to your preferences. By pressing on Accept selection, your cookie selection will be saved.",
         required: "<b>Required cookies</b>: Allow the correct functioning and presentation of all services offered in this website. These cookies are exempt of the law and its consent is therefore not required.",
-        always: "Always active",
         all: {
             accept: "Accept all",
             reject: "Reject all",
