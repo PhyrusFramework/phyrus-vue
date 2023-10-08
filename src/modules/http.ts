@@ -31,7 +31,7 @@ export type Request = {
     setHeaders: (headers: any) => Request,
     setDataFormat: (format: HTTPDataFormat) => Request,
     setResponseType: (type: HTTPResponseType) => Request,
-    //send: () => Promise<any>,
+    promise: () => Promise<any>,
     fakeResponse: (action: (request: Request) => Promise<any>) => Request,
     getFullResponse: () => Request,
     then: (callback: (response: any) => void) => Promise<any>
@@ -206,6 +206,9 @@ export default class http {
             setResponseType(type: HTTPResponseType) {
                 this.responseType = type;
                 return this;
+            },
+            promise() {
+                return http.exec(this);
             },
             then(callback: (value: any) => void) {
                 return http.exec(this).then(callback);

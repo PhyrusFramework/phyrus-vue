@@ -12,7 +12,7 @@ declare module '@vue/runtime-core' {
         $store: StoreClass,
         $storage: StorageClass,
         $utils: UtilsType,
-        $t: (key: string, params?: any) => void,
+        $t: (key: string, params?: any) => any,
         hasEvent: (name: string) => boolean,
         to: (page: string) => void,
         back: () => void,

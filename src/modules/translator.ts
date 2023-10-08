@@ -1,6 +1,5 @@
 import Utils from './utils';
 import { locales as def } from './locales/locales';
-import Config from './config';
 import PackageState from './PackageState';
 
 class Translator {
@@ -14,15 +13,18 @@ class Translator {
             cache: {}
         }
 
-        let defaultLanguage = Config.get('language.default');
-        if (!defaultLanguage) {
-            defaultLanguage = 'en';
-        }
+        let defaultLanguage : string|null = null;
 
-        Object.keys(locales).forEach((lang: string) => {
+        Object.keys(locales)
+        .forEach((lang: string) => {
+            if (!defaultLanguage) defaultLanguage = lang;
             if (!def[lang]) return;
             locales[lang] = Utils.merge(def[lang], locales[lang]);
         });
+
+        if (!defaultLanguage) {
+            defaultLanguage = 'en';
+        }
 
         obj['locales'] = locales;
 
@@ -37,7 +39,7 @@ class Translator {
 
     get supportedLanguages() : string[] {
         const obj = PackageState.get('translations');
-        if (!obj) return [Config.get('language.default')];
+        if (!obj) return [];
         return Object.keys(obj.translations);
     }
 
